@@ -1,5 +1,4 @@
 from flask import Flask, Blueprint
-from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from .config import config_by_name
 from flask_restful import Api
@@ -16,7 +15,6 @@ from main.controller.indexcontroller import IndexController
 from main.controller.seller_image_controller import SellerImageController, SellerImageFromEmailController
 from main.controller.admin_controller import AdminController, AdminPermissionController, AdminLoginController, ShopPermissionController
 
-flask_bcrypt = Bcrypt()
 
 
 def create_app(config_name):
@@ -24,7 +22,6 @@ def create_app(config_name):
     CORS(app)
     app.config.from_object(config_by_name[config_name])
     jwt = JWTManager(app)
-    flask_bcrypt.init_app(app)
     CORS(app)
     api_blueprint = Blueprint('api',__name__)
     api = Api(api_blueprint)

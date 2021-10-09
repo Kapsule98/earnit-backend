@@ -1,5 +1,4 @@
 from flask.globals import request
-from flask.wrappers import JSONMixin
 from flask_restful import Resource
 from flask import json, jsonify
 from main.service.admin_service import AdminService
