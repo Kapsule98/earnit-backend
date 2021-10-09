@@ -1,3 +1,3 @@
-from app import manage
+import app 
 if __name__ == "__main__":
-  manage.run()
+  app.run()
