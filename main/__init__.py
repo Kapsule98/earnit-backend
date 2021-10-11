@@ -140,7 +140,7 @@ def create_app(config_name):
     api.add_resource(AdminLoginController, '/admin/login')
     api.add_resource(ShopPermissionController, '/admin/shop')
 
-    app.register_blueprint(api_blueprint)
+    app.register_blueprint(api_blueprint,url_prefix="/api")
 
 
     return app
