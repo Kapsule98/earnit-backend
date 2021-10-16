@@ -4,8 +4,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from main.utils import weed_offers
 
 
-
-app = create_app('dev')
+env = os.environ['ENV']
+app = create_app(env)
 
 app.app_context().push()
 
