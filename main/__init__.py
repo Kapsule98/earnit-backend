@@ -1,6 +1,6 @@
 from flask import Flask, Blueprint
 from flask_cors import CORS
-import os
+from main.config import config_by_name
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController
@@ -14,52 +14,9 @@ from main.controller.cart_controller import CartService
 from main.controller.indexcontroller import IndexController
 from main.controller.seller_image_controller import SellerImageController, SellerImageFromEmailController
 from main.controller.admin_controller import AdminController, AdminPermissionController, AdminLoginController, ShopPermissionController
-
-class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
-    DEBUG = False
+from main.controller.privilage_controller import PrivillageController
 
 
-class DevelopmentConfig(Config):
-    NAME="development"
-    DEBUG = True
-    MONGO_URI = "mongodb+srv://kapil:k6K6EG47smjJuB0y@earnit-dev.ezmxz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    JWT_SECRET_KEY = 'dev'
-    JWT_ACCESS_TOKEN_EXPIRES = False
-    MAIL_SERVER= 'smtp.gmail.com'
-    MAIL_PORT = 465
-    MAIL_USERNAME = 'contact@lemmebuy.in'
-    MAIL_PASSWORD = 'sosabarapi'
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-
-class TestingConfig(Config):
-    NAME="testing"
-    DEBUG = True
-    TESTING = True
-    MONGO_URI = "mongodb+srv://kapil:g95oPBraubAmBECj@cluster0.inxon.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    PRESERVE_CONTEXT_ON_EXCEPTION = False
-    JWT_SECRET_KEY = 'dev'
-
-
-class ProductionConfig(Config):
-    NAME="production"
-    DEBUG = False
-    MONGO_URI = "mongodb+srv://kapil:YUH5Y4GtauXx00R6@cluster0.iuipl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    JWT_SECRET_KEY = 'prddevsecret'
-    JWT_ACCESS_TOKEN_EXPIRES = False
-    MAIL_SERVER= 'smtp.gmail.com'
-    MAIL_PORT = 465
-    MAIL_USERNAME = 'contact@lemmebuy.in'
-    MAIL_PASSWORD = 'sosabarapi'
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-
-config_by_name = dict(
-    dev=DevelopmentConfig,
-    test=TestingConfig,
-    prd=ProductionConfig
-)
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -140,6 +97,9 @@ def create_app(config_name):
     api.add_resource(AdminPermissionController, '/admin/permission')
     api.add_resource(AdminLoginController, '/admin/login')
     api.add_resource(ShopPermissionController, '/admin/shop')
+
+    ## Privillages check
+    api.add_resource(PrivillageController,'/authority')
 
     app.register_blueprint(api_blueprint,url_prefix="/api")
 

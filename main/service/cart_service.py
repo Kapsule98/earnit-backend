@@ -1,11 +1,11 @@
 import os
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name,mongo
 import time
 from flask import json, jsonify
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 user_table = db['user']

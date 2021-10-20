@@ -2,13 +2,13 @@ import os
 from flask_jwt_extended.utils import create_refresh_token
 import pymongo
 from pymongo.common import MIN_HEARTBEAT_INTERVAL
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 import time
 from flask import current_app
 import smtplib
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 transit_table = db['transit']
 seller_table = db['seller']

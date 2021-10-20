@@ -1,12 +1,12 @@
 import os
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from flask import make_response
 import gridfs
 
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 fs = gridfs.GridFS(db)

@@ -1,9 +1,9 @@
 import os
 import pymongo
-from config import config_by_name
+from config import config_by_name, mongo
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 transit_table = db['transit']
 seller_table = db['seller']

@@ -1,11 +1,10 @@
 import os
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from main.utils import isCategory
 from flask import jsonify   
-
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 category_table = db['category']
 seller_table = db['seller']

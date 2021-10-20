@@ -3,11 +3,11 @@ import os,time
 from flask import json, jsonify
 from main.utils import isOffer, isOfferModify
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from bson import ObjectId
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 active_offer_table = db['active_offer']

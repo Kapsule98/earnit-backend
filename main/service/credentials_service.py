@@ -1,4 +1,4 @@
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 import pymongo
 import os
 import random
@@ -7,8 +7,8 @@ from flask import jsonify
 from main.utils import send_email
 from werkzeug.security import generate_password_hash
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 user_table = db['user']

@@ -1,6 +1,6 @@
 import os
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from main.utils import isContact, isCategory, send_email
 from flask import json, jsonify
 import time
@@ -8,8 +8,8 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import create_access_token
 import random
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 seller_temp_table = db['seller_temp']

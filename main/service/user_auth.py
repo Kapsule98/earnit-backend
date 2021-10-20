@@ -3,7 +3,7 @@ import os
 import pymongo
 import time
 import random
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -13,8 +13,8 @@ from flask import jsonify
 from main.utils import send_email
 
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 user_table = db['user']
 verify_table = db['verify_mail_user']

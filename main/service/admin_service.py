@@ -1,15 +1,15 @@
 import os
 from flask.json import jsonify
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import create_access_token
 import random
 import time
 from main.utils import send_email
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 admin_verify_table = db['verify_mail_admin']
 admin_table = db['admin']

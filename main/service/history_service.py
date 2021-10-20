@@ -2,12 +2,12 @@ import os
 import random
 import time
 import pymongo
-from main.config import config_by_name
+from main.config import config_by_name, mongo
 from flask import json, jsonify
 from main.utils import offer_valid_redeeming, valid_transit , increment_qty
 
-config = config_by_name[os.getenv('ENV')]
-mongo = pymongo.MongoClient(config.MONGO_URI)
+# config = config_by_name[os.getenv('ENV')]
+# mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
 seller_table = db['seller']
 customer_table = db['user']
