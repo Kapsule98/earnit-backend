@@ -9,7 +9,7 @@ from main.controller.shop_detail_controller import SellerContactController, Sell
 from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
 from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController
 from main.controller.history_controller import SellerHistoryController, CustomerHistoryController, CustomerPointsController
-from main.controller.credentials_controller import SellerCredentialController, UserCredentialController
+from main.controller.credentials_controller import SellerCredentialController, UserCredentialController, AdminCredentialController
 from main.controller.cart_controller import CartService
 from main.controller.indexcontroller import IndexController
 from main.controller.seller_image_controller import SellerImageController, SellerImageFromEmailController
@@ -84,6 +84,7 @@ def create_app(config_name):
     ## Credential apis
     api.add_resource(SellerCredentialController, '/seller/cred')
     api.add_resource(UserCredentialController, '/cred')
+    api.add_resource(AdminCredentialController,'/admin/cred')
 
     ##cart api
     api.add_resource(CartService,'/cart')
