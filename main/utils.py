@@ -6,7 +6,7 @@ from main.config import config_by_name, mongo
 import time
 from flask import current_app
 import smtplib
-
+from email.message import EmailMessage
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
@@ -124,33 +124,30 @@ def increment_qty(offer_text,seller_username):
         return
 
 def send_email(email,username,otp,opcode):
-    # mail = Mail(current_app)
-    # print("porry")
-    # msg = Message('Hello', sender = 'contact@lemmeby.in', recipients = [email])
-    # msg.body = "Hi " + str(username) + " your OTP to reset password is "+ str(otp)
-    # print("aosduhaisud")
-    # mail.send(msg)
-
-    fromaddr = 'contact@lemmebuy.in'  
-    toaddrs  = email 
-    msg = ""
+    msg_body = ""
+    subject = ""
+    sender = 'contact@lemmebuy.in'
+    mail_password = 'sosabarapi'
     if opcode == 'PASS_RESET':
-        msg = 'OTP to reset password is '+ str(otp)  
+        msg_body = 'OTP to reset password is ' + str(otp)
+        subject = 'Lemmebuy: OTP to reset password'
     elif opcode == 'EMAIL_VERIFY':
-        msg = "OTP to verify email is " + str(otp)
+        msg_body = 'OTP to verify email is ' + str(otp)
+        subject = 'Lemmebuy: OTP to verify email'
     else:
-        msg = ""
-
-    username = 'contact@lemmebuy.in'  
-    password = 'sosabarapi'
-
+        return False
+    msg = EmailMessage()
+    msg.set_content(msg_body)
+    msg['subject'] = subject
+    msg['From'] = sender 
+    msg['to'] = email
     server = smtplib.SMTP('smtp.gmail.com', 587)  
     server.ehlo()
     server.starttls()
-    server.login(username, password)  
-    server.sendmail(fromaddr, toaddrs, msg) 
+    server.login(sender, mail_password)  
+    server.send_message(msg)
     server.quit()
-    return True
+    return True    
 
 def weed_offers():
     print("weed active offers called")

@@ -15,6 +15,7 @@ from main.controller.indexcontroller import IndexController
 from main.controller.seller_image_controller import SellerImageController, SellerImageFromEmailController
 from main.controller.admin_controller import AdminController, AdminPermissionController, AdminLoginController, ShopPermissionController
 from main.controller.privilage_controller import PrivillageController
+from main.controller.user_controller import CustomerController
 
 
 
@@ -98,6 +99,7 @@ def create_app(config_name):
     api.add_resource(AdminPermissionController, '/admin/permission')
     api.add_resource(AdminLoginController, '/admin/login')
     api.add_resource(ShopPermissionController, '/admin/shop')
+    api.add_resource(CustomerController,'/admin/customer')
 
     ## Privillages check
     api.add_resource(PrivillageController,'/authority')

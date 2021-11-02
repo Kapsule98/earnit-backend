@@ -92,11 +92,6 @@ class HistoryService:
                         "discount_percent":0,
                         "min_val":0,
                     }
-
-            print("loop vars")
-            print(offer)
-            print(transaction)
-            print(seller)
             obj = {
                 "seller_display_name":seller['display_name'],
                 "seller_shop_name":seller['shop_name'],
