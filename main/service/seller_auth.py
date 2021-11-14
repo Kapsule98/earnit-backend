@@ -52,6 +52,8 @@ class SellerAuthService:
             elif existing_email:
                 return jsonify(email_taken)
             else:
+                if not 'location' in seller:
+                    seller['location'] = ""
                 if not 'products' in seller:
                     seller['products'] = []
                 if not 'owner_name' in seller:
@@ -62,6 +64,7 @@ class SellerAuthService:
                 seller['active_time'] = ''
                 seller['open'] = None
                 seller['coupons_sold'] = 0
+                seller['bio'] = ''
                 seller_obj = {
                     'username':seller['username'],
                     'password':generate_password_hash(seller['password']),
@@ -79,7 +82,8 @@ class SellerAuthService:
                     'earning':seller['earning'],
                     'active_time':seller['active_time'],
                     'open':seller['open'],
-                    'coupons_sold':seller['coupons_sold']
+                    'coupons_sold':seller['coupons_sold'],
+                    'bio':seller['bio']
                 }
                 seed = random.SystemRandom()
                 otp = seed.randint(100000,999999)
@@ -246,8 +250,8 @@ class SellerAuthService:
             return False
         if not 'shop_name' in seller or seller['shop_name'] == '':
             return False
-        if not 'location' in seller:
-            return False
+        # if not 'location' in seller:      ## making location not mandatory
+        #     return False
 
         return True
         

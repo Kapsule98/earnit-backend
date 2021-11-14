@@ -22,5 +22,16 @@ def delete_all_user_images():
         })
     
     return
+
+def add_bio_to_sellers():
+    sellers = seller_table.find()
+    for seller in sellers:
+        seller_table.update_one({'username':seller['username']}, {
+            "$set":{
+                'bio':""
+            }
+        })
+    
 if __name__ == "__main__":
-    delete_all_user_images()
+    # add_bio_to_sellers()
+    pass

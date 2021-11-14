@@ -2,11 +2,8 @@ import os
 from dns.opcode import STATUS
 import pymongo
 from main.config import config_by_name, mongo
-from main.utils import isContact,isCategory,isProduct
+from main.utils import isContact,isCategory,isProduct,verify_maps_url
 from flask import json, jsonify
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_jwt_extended import create_access_token
-
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
@@ -241,8 +238,9 @@ class ShopService:
     
     def update_location(self,username,location):
         print(len(location))
-        print(isinstance(location,list))
-        if len(location) == 2 and isinstance(location, list) and (isinstance(location[0],float) and isinstance(location[1],float)):
+        print(isinstance(location,str))
+        if isinstance(location, str):
+            location = verify_maps_url(location)
             seller = seller_table.find_one_and_update({
                     'username': username
                 },{"$set":{
@@ -370,4 +368,36 @@ class ShopService:
                 "status":200,
                 "display_name":seller['display_name'],
                 "coupons_sold":seller['coupons_sold']
+            })
+
+    def update_bio(self,username,bio):
+        seller = seller_table.find_one({'username':username})
+        if seller is None:
+            return jsonify({
+                'msg':"seller not found",
+                "status":404
+            })
+        else:
+            seller_table.find_one_and_update({'username':username}, {
+                "$set":{
+                    'bio':bio
+                }
+            })
+            return jsonify({
+                'msg':"seller bio updated",
+                'status':200
+            })
+
+    def get_bio(self,username):
+        seller = seller_table.find_one({'username':username})
+        if seller is None:
+            return jsonify({
+                'msg':"Seller not found",
+                'status':404
+            })
+        else:
+            return jsonify({
+                "msg":"Bio fetched",
+                "status":200,
+                "bio":seller['bio']
             })

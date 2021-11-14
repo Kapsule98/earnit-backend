@@ -5,7 +5,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController
 from main.controller.seller_auth_controller import SellerRegisterController, SellerLoginController, SellerLogoutController
-from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController
+from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController, SellerBioController
 from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
 from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController
 from main.controller.history_controller import SellerHistoryController, CustomerHistoryController, CustomerPointsController
@@ -57,6 +57,7 @@ def create_app(config_name):
     api.add_resource(CloseShopController,'/seller/close_shop')
     api.add_resource(SellerEarningController, '/seller/earning')
     api.add_resource(SellerCouponsController, '/seller/get_coupons')
+    api.add_resource(SellerBioController, '/seller/bio')
     
     ## add and remove offer (by seller)
     api.add_resource(SellerOfferController,'/seller/offer')

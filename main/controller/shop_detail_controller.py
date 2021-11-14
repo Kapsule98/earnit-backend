@@ -1,6 +1,7 @@
 from os import error
 from flask import request
 from flask.json import jsonify
+from flask_jwt_extended.utils import get_jwt
 from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
@@ -301,6 +302,35 @@ class SellerCouponsController(Resource):
             username = get_jwt_identity()
             res = self.shop_service.get_number_of_coupons(username)
             return res
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
+
+class SellerBioController(Resource): 
+    def __init__(self,shop_service:ShopService = ShopService()):
+        self.shop_service = shop_service
+
+    @jwt_required()
+    def get(self):
+        try:
+            username = get_jwt_identity()
+            return self.shop_service.get_bio(username)
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
+    
+    @jwt_required()
+    def post(self):
+        try:
+            req = request.json
+            username = get_jwt_identity()
+            if 'bio' not in req:
+                return jsonify({
+                    'msg':"Bio not found in request",
+                    'status':400
+                })
+            bio = req['bio']
+            return self.shop_service.update_bio(username,bio)
         except Exception as e:
             print(e)
             return jsonify(error_msg)

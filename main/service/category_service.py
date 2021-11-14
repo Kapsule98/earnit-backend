@@ -35,7 +35,8 @@ class CategoryService:
                     'owner_name':seller['owner_name'],
                     'active_time':seller['active_time'],
                     'email':seller['email'],
-                    'open':seller['open']
+                    'open':seller['open'],
+                    'bio':seller['bio']
                 } 
                 res.append(obj)
             return jsonify({
@@ -60,7 +61,8 @@ class CategoryService:
                         'owner_name':seller['owner_name'],
                         'active_time':seller['active_time'],
                         'email':seller['email'],
-                        'open':seller['open']
+                        'open':seller['open'],
+                        'bio':seller['bio']
                     } 
                     res.append(obj)
             return jsonify({

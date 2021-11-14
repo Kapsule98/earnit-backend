@@ -180,6 +180,9 @@ def move_archive_to_active():
         archive_table.delete_one(offer)
 
     return
+
+def verify_maps_url(map_url):   ## TODO verify maps url
+    return map_url
 # def migrate():
 #     offers = history_table.find()
 #     for offer in offers:
