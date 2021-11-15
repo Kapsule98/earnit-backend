@@ -310,11 +310,10 @@ class SellerBioController(Resource):
     def __init__(self,shop_service:ShopService = ShopService()):
         self.shop_service = shop_service
 
-    @jwt_required()
     def get(self):
         try:
-            username = get_jwt_identity()
-            return self.shop_service.get_bio(username)
+            shopemail = request.args.get('email')
+            return self.shop_service.get_bio(shopemail)
         except Exception as e:
             print(e)
             return jsonify(error_msg)

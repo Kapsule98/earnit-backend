@@ -388,8 +388,8 @@ class ShopService:
                 'status':200
             })
 
-    def get_bio(self,username):
-        seller = seller_table.find_one({'username':username})
+    def get_bio(self,email):
+        seller = seller_table.find_one({'email':email})
         if seller is None:
             return jsonify({
                 'msg':"Seller not found",
