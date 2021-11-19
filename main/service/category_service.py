@@ -86,6 +86,8 @@ class CategoryService:
                     "min_val":offer['min_val'],
                     "category":offer['category'],
                     "products":offer['products'],
+                    "mrp":offer['mrp'],
+                    "offer_price":offer['offer_price'],
                     "shop_name":seller['shop_name'],
                     "display_name":seller['display_name'],
                     "seller_email":seller['email']
@@ -122,6 +124,8 @@ class CategoryService:
                         "min_val":offer['min_val'],
                         "category":offer['category'],
                         "products":offer['products'],
+                        'mrp':offer['mrp'],
+                        'offer_price':offer['offer_price']
                     }
                     res.append(obj)
             return jsonify({

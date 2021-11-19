@@ -1,4 +1,5 @@
 import os
+from dns.rdatatype import NULL
 from flask_jwt_extended.utils import create_refresh_token
 import pymongo
 from pymongo.common import MIN_HEARTBEAT_INTERVAL
@@ -40,20 +41,36 @@ def isProduct(list):       ##FIXME add login to verify product list
     else:
         return True
 
+def prepare_offer(offer):
+    ## if offer is of type FIXED then calculate discount percent
+    if offer['type'] == 'FIXED':
+        discount_percent = (offer['mrp'] - offer['offer_price']) / offer['mrp']
+        offer['discount_percent'] = discount_percent*100
+        offer['min_val'] = None
+    ## if offer is of type ITEM_DISCOUNT or BILL_DISCOUNT then set mrp and offer_price as null
+    else:
+        offer['mrp'] = NULL
+        offer['offer_price'] = NULL
+    return offer
 def isOffer(offer):        
     if 'validity' not in offer or not isinstance(offer['validity'],list) or len(offer['validity'])!=2 or not isinstance(offer['validity'][0],int) or not isinstance(offer['validity'][1],int):
         return False
-    if 'type' not in offer or not (offer['type'] == 'ITEM_DISCOUNT' or offer['type'] == 'BILL_DISCOUNT'):
+    if 'type' not in offer or not (offer['type'] == 'ITEM_DISCOUNT' or offer['type'] == 'BILL_DISCOUNT' or offer['type'] == 'FIXED'):
         return False
-    if 'discount_percent' not in offer or not isinstance(offer['discount_percent'],int):
+    if 'discount_percent' not in offer or not isinstance(offer['discount_percent'],float):
         return False
     if 'offer_text' not in offer or not isinstance(offer['offer_text'],str) or offer['offer_text'] == '':
         return False
     if 'quantity' not in offer or not isinstance(offer['quantity'],int):
         return False
-    if 'min_val' not in offer or not isinstance(offer['min_val'],int):
+    if 'min_val' not in offer or ((offer['type'] == 'ITEM_DISCOUNT' or offer['type'] == 'BILL_DISCOUNT') and not isinstance(offer['min_val'],int)):
+        print("min val")
         return False
     if 'products' not in offer:
+        return False
+    if 'mrp' not in offer:
+        return False
+    if 'offer_price' not in offer:
         return False
     else:
         return True
@@ -72,6 +89,10 @@ def isOfferModify(offer):
     if 'min_val' not in offer:
         return False
     if 'products' not in offer:
+        return False
+    if 'mrp' not in offer:
+        return False
+    if 'offer_price' not in offer:
         return False
     return True
         

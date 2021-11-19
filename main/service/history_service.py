@@ -47,6 +47,8 @@ class HistoryService:
                         "cp":transaction['cp'],
                         "sp":transaction['sp'],
                         "products":offer['products'],
+                        'mrp':offer['mrp'],
+                        'offer_price':offer['offer_price'],
                         "discount_percent":offer['discount_percent'],
                         "discount_type":offer['type']
                     }
@@ -103,6 +105,8 @@ class HistoryService:
                 "credit_earned":transaction['credit_points'],
                 "category":seller['category'],
                 "products":offer['products'],
+                'mrp':offer['mrp'],
+                'offer_price':offer['offer_price'],
                 "validity":offer['validity'],
                 "type":offer['type'],
                 "discount_percent":offer['discount_percent'],

@@ -43,6 +43,8 @@ class CartService:
                     'validity':offer['validity'],
                     'time_added_cart':cart_offer['timestamp'],
                     'products':offer['products'],
+                    'mrp':offer['mrp'],
+                    'offer_price':offer['offer_price'],
                     'seller_location':seller['location'],
                     'seller_address':seller['address'],
                     'seller_email':seller['email'],

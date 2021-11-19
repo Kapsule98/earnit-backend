@@ -1,10 +1,8 @@
 from mmap import ACCESS_READ
-import os,time
-from flask import json, jsonify
-from main.utils import isOffer, isOfferModify
-import pymongo
-from main.config import config_by_name, mongo
-from bson import ObjectId
+import time
+from flask import jsonify
+from main.utils import isOffer, isOfferModify, prepare_offer
+from main.config import mongo
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -35,6 +33,8 @@ class OfferService:
                'quantity': doc['quantity'],
                'min_val': doc['min_val'],
                'products':doc['products'],
+               'mrp':doc['mrp'],
+               'offer_price':doc['offer_price'],
                'shop_name':seller['shop_name'],
                'category':seller['category'],
                'seller_display_name':seller['display_name'],
@@ -69,6 +69,8 @@ class OfferService:
                     'quantity':offer['quantity'],
                     'min_val':offer['min_val'],
                     'products':offer['products'],
+                    'mrp':offer['mrp'],
+                    'offer_price':offer['offer_price'],
                     'shop_name':seller['shop_name'],
                     'category':seller['category'],
                     'seller_display_name':seller['display_name'],
@@ -86,7 +88,10 @@ class OfferService:
 
 
     def add_seller_offer(self,username,offer):
+        offer = prepare_offer(offer)
+        print("offer to add",offer)
         if not isOffer(offer):
+            print("not offer")
             return jsonify(invalid_request)
         else:
             seller = seller_table.find_one({'username':username})
@@ -108,6 +113,8 @@ class OfferService:
                     'quantity':offer['quantity'],
                     'products':offer['products'],
                     'min_val':offer['min_val'],
+                    'mrp':offer['mrp'],
+                    'offer_price':offer['offer_price'],
                     'category':seller['category']
                 }
                 active_offer_table.insert_one(offer)
@@ -118,6 +125,7 @@ class OfferService:
                 })
 
     def modify_seller_offer(self,username,offer):
+        offer = prepare_offer(offer)
         if not isOfferModify(offer):
             return jsonify(invalid_request)
         else:
@@ -132,7 +140,9 @@ class OfferService:
                         'discount_percent':offer['discount_percent'],
                         'quantity':offer['quantity'],
                         'min_val':offer['min_val'],
-                        'products':offer['products']
+                        'products':offer['products'],
+                        'mrp':offer['mrp'],
+                        'offer_text':offer['offer_text']
                     }
                 })
                 return jsonify({
@@ -154,7 +164,7 @@ class OfferService:
             if offer_exists is not None:
                 # delete offer
                 active_offer_table.find_one_and_delete({'shop_id':username,'offer_text':offer_text})
-                offer_exists['timestamp'] = time.time()
+                offer_exists['timestamp'] = time.time() # time when offer was deleted
                 
                 # move offer to archive
                 archive_table.insert(offer_exists)
