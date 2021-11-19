@@ -173,3 +173,12 @@ class AdminService:
             return res,200
         else:
             return "Unauthorised",401
+
+    def admin_list(self):
+        # get list of all admins
+        adminlist = []
+        admins = admin_table.find()
+        for admin in admins:
+            obj = {"display_name":admin["display_name"],"email":admin["email"]}
+            adminlist.append(obj)
+        return adminlist
