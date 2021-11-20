@@ -54,23 +54,31 @@ def prepare_offer(offer):
     return offer
 def isOffer(offer):        
     if 'validity' not in offer or not isinstance(offer['validity'],list) or len(offer['validity'])!=2 or not isinstance(offer['validity'][0],int) or not isinstance(offer['validity'][1],int):
+        print('validity')
         return False
     if 'type' not in offer or not (offer['type'] == 'ITEM_DISCOUNT' or offer['type'] == 'BILL_DISCOUNT' or offer['type'] == 'FIXED'):
+        print('offer type error')
         return False
-    if 'discount_percent' not in offer or not isinstance(offer['discount_percent'],float):
+    if 'discount_percent' not in offer or not (isinstance(offer['discount_percent'],float) or isinstance(offer['discount_percent'],int)):
+        print('discount percent')
         return False
     if 'offer_text' not in offer or not isinstance(offer['offer_text'],str) or offer['offer_text'] == '':
+        print('offer text')
         return False
     if 'quantity' not in offer or not isinstance(offer['quantity'],int):
+        print('quantity')
         return False
     if 'min_val' not in offer or ((offer['type'] == 'ITEM_DISCOUNT' or offer['type'] == 'BILL_DISCOUNT') and not isinstance(offer['min_val'],int)):
         print("min val")
         return False
     if 'products' not in offer:
+        print('products')
         return False
     if 'mrp' not in offer:
+        print('mrp not found')
         return False
     if 'offer_price' not in offer:
+        print('offer price not found')
         return False
     else:
         return True

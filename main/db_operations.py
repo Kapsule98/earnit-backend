@@ -36,12 +36,18 @@ def add_bio_to_sellers():
 def add_mrp_to_offers():
     offers = active_offer_table.find()
     for offer in offers:
-        active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']}, {
-            "$set": {
-                'mrp':None,
-                'offer_price':None,
-            }
-        })
+        if 'mrp' not in offer:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']}, {
+                "$set": {
+                    'mrp':None,
+                }
+            })
+        if 'offer_price' not in offer:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']}, {
+                "$set": {
+                    'offer_price':None,
+                }
+            })
 if __name__ == "__main__":
-    #add_mrp_to_offers()
+    add_mrp_to_offers()
     pass

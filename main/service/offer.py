@@ -22,6 +22,7 @@ class OfferService:
     def get_all_offers(self):
         cur = active_offer_table.find()
         offers = []
+        print("cur = ",cur)
         for doc in cur:
             seller_id = doc['shop_id']
             seller = seller_table.find_one({'username':seller_id})
@@ -42,6 +43,7 @@ class OfferService:
             }
             offers.append(obj)
         count = len(offers)
+        print("count = ",count)
         return jsonify({
             "msg":"All offers fetched",
             "status":200,
@@ -91,7 +93,7 @@ class OfferService:
         offer = prepare_offer(offer)
         print("offer to add",offer)
         if not isOffer(offer):
-            print("not offer")
+            print("no offer")
             return jsonify(invalid_request)
         else:
             seller = seller_table.find_one({'username':username})
@@ -118,6 +120,7 @@ class OfferService:
                     'category':seller['category']
                 }
                 active_offer_table.insert_one(offer)
+                print("yo")
                 return jsonify({
                     'msg':"Offer added successfully",
                     'seller':seller['display_name'],
