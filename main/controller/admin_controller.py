@@ -112,3 +112,15 @@ class ShopPermissionController(Resource):
         except Exception as e:
             print(e)
             return jsonify(error_msg)
+
+class AdminListController(Resource):
+    def __init__(self,admin_service:AdminService = AdminService()):
+        self.admin_service = admin_service
+    
+    def get(self):
+        try:
+            return self.admin_service.admin_list()
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
+    
