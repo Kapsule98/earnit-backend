@@ -48,6 +48,29 @@ def add_mrp_to_offers():
                     'offer_price':None,
                 }
             })
+
+def add_image_url_to_offers():
+    offers = active_offer_table.find()
+    for offer in offers:
+        if 'image_url' not in offer:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']}, {
+                "$set":{
+                    'image_url':None
+                }
+            })
+    return 
+
+def add_bio_to_offers():
+    offers = active_offer_table.find()
+    for offer in offers:
+        if 'bio' not in offer:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']}, {
+                "$set":{
+                    'bio':None
+                }
+            })
+    return 
+
 if __name__ == "__main__":
-    add_mrp_to_offers()
+    add_bio_to_offers()
     pass

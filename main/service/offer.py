@@ -4,6 +4,7 @@ from flask import jsonify
 from main.utils import isOffer, isOfferModify, prepare_offer
 from main.config import mongo
 import cloudinary
+import cloudinary.uploader
 import os
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -96,7 +97,7 @@ class OfferService:
 
     def add_seller_offer(self,username,offer):
         offer = prepare_offer(offer)
-        print("offer to add",offer)
+        # print("offer to add",offer)
         if not isOffer(offer):
             print("no offer")
             return jsonify(invalid_request)
