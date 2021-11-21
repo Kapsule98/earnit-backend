@@ -131,6 +131,8 @@ def valid_transit(offer,payload):
         return False, False
     if offer['min_val'] > payload['cp']:
         return False,False
+    if offer['type'] == 'FIXED' and (offer['mrp'] != payload['cp'] or offer['offer_price'] != payload['sp']):
+        return False,False
     else:
         otp_gen_time = offer['timestamp']
         current_time = time.time()

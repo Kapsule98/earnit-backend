@@ -112,7 +112,7 @@ class OfferService:
                     "status":400
                 })
             else:
-                ## TODO if offer has image then upload to cloudinary and get image url
+                ## if offer has image then upload to cloudinary and get image url
                 image_url = None
                 if 'image_base64' in offer:
                     cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
