@@ -120,7 +120,7 @@ class OfferService:
                     
                     status = cloudinary.uploader.upload(offer['image_base64'])
                     print("cloudinary image upload status response = ",status)
-                    image_url = status.secure_url
+                    image_url = status['secure_url']
 
                 print("image url = ",image_url)
                 offer = {
@@ -139,7 +139,6 @@ class OfferService:
                     'category':seller['category']
                 }
                 active_offer_table.insert_one(offer)
-                print("yo")
                 return jsonify({
                     'msg':"Offer added successfully",
                     'seller':seller['display_name'],
