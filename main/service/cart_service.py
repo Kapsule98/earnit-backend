@@ -45,6 +45,8 @@ class CartService:
                     'products':offer['products'],
                     'mrp':offer['mrp'],
                     'offer_price':offer['offer_price'],
+                    'bio':offer['bio'],
+                    'image_url':offer['image_url'],
                     'seller_location':seller['location'],
                     'seller_address':seller['address'],
                     'seller_email':seller['email'],

@@ -34,6 +34,7 @@ class redeemService:
             })
         else:
             seller_username = seller['username']
+            ## TODO check valid after adding FIXED type
             valid_status, obj =  offer_valid_redeeming(payload,seller_username)
             if valid_status:
                 offer_text = obj['offer_text']
@@ -94,6 +95,7 @@ class redeemService:
                 "msg":"code not found in transit",
                 "status":400
             })
+        ## TODO check validation logic after adding mrp,offer_price, FIXED type
         valid_offer,expired = valid_transit(transit_offer,payload)
         if valid_offer:
             money_saved = cp - sp

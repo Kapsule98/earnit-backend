@@ -88,6 +88,8 @@ class CategoryService:
                     "products":offer['products'],
                     "mrp":offer['mrp'],
                     "offer_price":offer['offer_price'],
+                    'bio':offer['bio'],
+                    'image_url':offer['image_url'],
                     "shop_name":seller['shop_name'],
                     "display_name":seller['display_name'],
                     "seller_email":seller['email']
@@ -125,7 +127,9 @@ class CategoryService:
                         "category":offer['category'],
                         "products":offer['products'],
                         'mrp':offer['mrp'],
-                        'offer_price':offer['offer_price']
+                        'offer_price':offer['offer_price'],
+                        'bio':offer['bio'],
+                        'image_url':offer['image_url'],
                     }
                     res.append(obj)
             return jsonify({

@@ -80,6 +80,9 @@ def isOffer(offer):
     if 'offer_price' not in offer:
         print('offer price not found')
         return False
+    if 'bio' not in offer:
+        print('bio not in offer')
+        return False
     else:
         return True
 

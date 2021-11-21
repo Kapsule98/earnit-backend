@@ -44,12 +44,6 @@ class SellerOfferController(Resource):
         try:
             res = self.offer_service.add_seller_offer(seller_username,offer)
             return res
-            # if 'offer' in req:
-            #     offer = req['offer']
-            #     res = self.offer_service.add_seller_offer(seller_username,offer)
-            #     return res
-            # else:
-            #     return jsonify(error_msg)
         except Exception as e:
             print (e)
             return jsonify(error_msg)

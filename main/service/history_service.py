@@ -49,6 +49,8 @@ class HistoryService:
                         "products":offer['products'],
                         'mrp':offer['mrp'],
                         'offer_price':offer['offer_price'],
+                        'bio':offer['bio'],
+                        'image_url':offer['image_url'],
                         "discount_percent":offer['discount_percent'],
                         "discount_type":offer['type']
                     }
@@ -107,6 +109,8 @@ class HistoryService:
                 "products":offer['products'],
                 'mrp':offer['mrp'],
                 'offer_price':offer['offer_price'],
+                'bio':offer['bio'],
+                'image_url':offer['image_url'],
                 "validity":offer['validity'],
                 "type":offer['type'],
                 "discount_percent":offer['discount_percent'],

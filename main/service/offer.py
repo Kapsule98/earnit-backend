@@ -3,7 +3,8 @@ import time
 from flask import jsonify
 from main.utils import isOffer, isOfferModify, prepare_offer
 from main.config import mongo
-
+import cloudinary
+import os
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
@@ -35,6 +36,8 @@ class OfferService:
                'min_val': doc['min_val'],
                'products':doc['products'],
                'mrp':doc['mrp'],
+               'bio':doc['bio'],
+               'image_url':doc['image_url'],
                'offer_price':doc['offer_price'],
                'shop_name':seller['shop_name'],
                'category':seller['category'],
@@ -72,6 +75,8 @@ class OfferService:
                     'min_val':offer['min_val'],
                     'products':offer['products'],
                     'mrp':offer['mrp'],
+                    'bio':offer['bio'],
+                    'image_url':offer['image_url'],
                     'offer_price':offer['offer_price'],
                     'shop_name':seller['shop_name'],
                     'category':seller['category'],
@@ -106,6 +111,17 @@ class OfferService:
                     "status":400
                 })
             else:
+                ## TODO if offer has image then upload to cloudinary and get image url
+                image_url = None
+                if 'image_base64' in offer:
+                    cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
+                                        api_secret=os.getenv('API_SECRET'))
+                    
+                    status = cloudinary.uploader.upload(offer['image_base64'])
+                    print("cloudinary image upload status response = ",status)
+                    image_url = status.secure_url
+
+                print("image url = ",image_url)
                 offer = {
                     'shop_id':username,
                     'validity':offer['validity'],
@@ -116,6 +132,8 @@ class OfferService:
                     'products':offer['products'],
                     'min_val':offer['min_val'],
                     'mrp':offer['mrp'],
+                    'bio':offer['bio'],
+                    'image_url':image_url,
                     'offer_price':offer['offer_price'],
                     'category':seller['category']
                 }
@@ -145,7 +163,9 @@ class OfferService:
                         'min_val':offer['min_val'],
                         'products':offer['products'],
                         'mrp':offer['mrp'],
-                        'offer_text':offer['offer_text']
+                        'offer_price':offer['offer_price'],
+                        'offer_text':offer['offer_text'],
+                        'bio':offer['bio'],
                     }
                 })
                 return jsonify({
