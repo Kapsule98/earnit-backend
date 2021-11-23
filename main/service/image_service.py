@@ -1,7 +1,8 @@
 import os
+from flask.wrappers import JSONMixin
 import pymongo
 from main.config import config_by_name, mongo
-from flask import make_response
+from flask import make_response, jsonify
 import gridfs
 
 
@@ -36,46 +37,40 @@ class ImageService:
     def get_shop_image(self,username):
         seller = seller_table.find_one({'username':username})
         if seller is None:
-            return "Seller not found",404
+            return jsonify({
+                "msg":"seller not found",
+                "status":404
+            })
         if 'image' not in seller or seller['image'] == "":
-            return "image does not exist for seller",404
+            return jsonify({
+                "msg":"Image does not exist for seller",
+                "status":404
+            })
         else:
-            status = fs.exists(seller['image'])
-            print(status)
-            if not status:
-                return "Image not found",404 
-            
-            image = fs.get(seller['image']).read()
-            # print(image)
-            if image:
-                response = make_response(image)
-                response.headers.set('Content-Type', 'image/jpeg')
-                response.headers.set(
-                'Content-Disposition', 'attachment')
-                return response
-            else:
-                return "error while fetching image",500
+            return jsonify({
+                'image':seller['image'],
+                "status":200,
+                "msg":"image fetched successfully"
+            })
 
 
     def get_shop_image_from_email(self,email):
         seller = seller_table.find_one({'email':email})
         if seller is None:
-            return "Seller does not exist",404
+            return jsonify({
+                "msg":"Seller does not exist",
+                "status":404
+            })
 
         if 'image' not in seller or seller["image"] == "":
-            return "image does not exist for seller",404
-
-
-        exists = fs.exists(seller['image'])
-        if not exists:
-            return "image does not exist for seller",404
-
-        image = fs.get(seller['image']).read()
-        if image:
-            response = make_response(image)
-            response.headers.set('Content-Type', 'image/jpeg')
-            response.headers.set(
-            'Content-Disposition', 'attachment')
-            return response
-        else:
-            return "error while fetching image",500
+            return jsonify({
+                "msg":"image does not exist for seller",
+                "status":400,
+            })
+        
+        return jsonify({
+            "msg":"Seller image fetched successfully",
+            "status":200,
+            "image":seller["image"]
+        })
+        

@@ -2,6 +2,9 @@ import os
 from dns.rdatatype import NULL
 import pymongo
 from config import config_by_name, mongo
+import gridfs
+import cloudinary
+import cloudinary.uploader
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -71,6 +74,30 @@ def add_bio_to_offers():
             })
     return 
 
+def convert_image_to_url():
+    sellers = seller_table.find()
+    for seller in sellers:
+        if 'image' in seller and seller['username'] != "sanju":
+            ## upload image to cloudinary
+            fs = gridfs.GridFS(db)
+            image = fs.get(seller['image']).read()
+            cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
+                                        api_secret=os.getenv('API_SECRET'))
+                    
+            status = cloudinary.uploader.upload(image)
+            print("cloudinary image upload status response = ",status)
+            image_url = status['secure_url']
+            print("image_url",image_url)
+            ## set url to image in seller
+            print("Sellr username",seller['username'])
+            seller_table.update_one({'username':seller['username']}, {
+                "$set":{
+                    'image':image_url
+                }
+            })
+            updated_seller = seller_table.find_one({'username':seller['username']})
+            print(updated_seller['image'])
+
 if __name__ == "__main__":
-    add_bio_to_offers()
+    #convert_image_to_url()
     pass
