@@ -3,6 +3,7 @@ from flask.wrappers import JSONMixin
 import pymongo
 from main.config import config_by_name, mongo
 from flask import make_response, jsonify
+from main.utils import upload_image_cloudinary
 import gridfs
 
 
@@ -16,23 +17,23 @@ class ImageService:
     def save_shop_image(self,username,image):
         seller = seller_table.find_one({'username':username})
         if seller is None:
-            return "Seller does not exist",404
-        status = fs.put(image, filename=username, encoding='utf-8')
-        ## based on status return result
-        print(status)
-        dir(status)
-        if status:
-            if 'image' in seller:
-                old_image = seller['image']
-                fs.delete(old_image)
-            seller_table.find_one_and_update({'username':username},{
-                "$set":{
-                    'image':status
-                }
+            return jsonify({
+                "msg": "Seller does not exist",
+                "status":404
             })
-            return "Image uploaded successfully",200
-        else:
-            return "Image upload failed",500
+        ## upload image on cloudinary
+        ## get secure_url from status
+        secure_url = upload_image_cloudinary(image)
+        ## update seller image in db
+        seller_table.find_one_and_update({'username':username},{
+            "$set":{
+                'image':secure_url
+            }
+        })
+        return jsonify({
+            "msg":"Image uploaded successfully",
+            "status":200
+        })
     
     def get_shop_image(self,username):
         seller = seller_table.find_one({'username':username})
@@ -41,7 +42,7 @@ class ImageService:
                 "msg":"seller not found",
                 "status":404
             })
-        if 'image' not in seller or seller['image'] == "":
+        if 'image' not in seller or seller['image'] == None:
             return jsonify({
                 "msg":"Image does not exist for seller",
                 "status":404
@@ -62,7 +63,7 @@ class ImageService:
                 "status":404
             })
 
-        if 'image' not in seller or seller["image"] == "":
+        if 'image' not in seller or seller["image"] == None:
             return jsonify({
                 "msg":"image does not exist for seller",
                 "status":400,

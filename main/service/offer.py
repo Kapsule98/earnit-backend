@@ -1,10 +1,8 @@
 from mmap import ACCESS_READ
 import time
 from flask import jsonify
-from main.utils import isOffer, isOfferModify, prepare_offer
+from main.utils import isOffer, isOfferModify, prepare_offer, upload_image_cloudinary
 from main.config import mongo
-import cloudinary
-import cloudinary.uploader
 import os
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -97,7 +95,7 @@ class OfferService:
 
     def add_seller_offer(self,username,offer):
         offer = prepare_offer(offer)
-        # print("offer to add",offer)
+        print("offer to add",offer)
         if not isOffer(offer):
             print("no offer")
             return jsonify(invalid_request)
@@ -115,12 +113,7 @@ class OfferService:
                 ## if offer has image then upload to cloudinary and get image url
                 image_url = None
                 if 'image_base64' in offer:
-                    cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
-                                        api_secret=os.getenv('API_SECRET'))
-                    
-                    status = cloudinary.uploader.upload(offer['image_base64'])
-                    print("cloudinary image upload status response = ",status)
-                    image_url = status['secure_url']
+                    image_url = upload_image_cloudinary(offer['image_base64'])
 
                 print("image url = ",image_url)
                 offer = {

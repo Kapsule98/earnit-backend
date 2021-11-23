@@ -5,6 +5,7 @@ from config import config_by_name, mongo
 import gridfs
 import cloudinary
 import cloudinary.uploader
+from utils import upload_image_cloudinary
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -81,10 +82,7 @@ def convert_image_to_url():
             ## upload image to cloudinary
             fs = gridfs.GridFS(db)
             image = fs.get(seller['image']).read()
-            cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
-                                        api_secret=os.getenv('API_SECRET'))
-                    
-            status = cloudinary.uploader.upload(image)
+            status = upload_image_cloudinary(image)
             print("cloudinary image upload status response = ",status)
             image_url = status['secure_url']
             print("image_url",image_url)

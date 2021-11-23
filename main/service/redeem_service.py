@@ -98,6 +98,8 @@ class redeemService:
                 "status":400
             })
         valid_offer,expired = valid_transit(transit_offer,payload)
+        print("valid offer",valid_offer)
+        print("expired",expired)
         if valid_offer:
             money_saved = cp - sp
             money_earned = sp

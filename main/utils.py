@@ -1,15 +1,12 @@
 import os
 from dns.rdatatype import NULL
 from flask_jwt_extended.utils import create_refresh_token
-import pymongo
-from pymongo.common import MIN_HEARTBEAT_INTERVAL
-from main.config import config_by_name, mongo
+from main.config import mongo
 import time
-from flask import current_app
 import smtplib
 from email.message import EmailMessage
-# config = config_by_name[os.getenv('ENV')]
-# mongo = pymongo.MongoClient(config.MONGO_URI)
+import cloudinary, cloudinary.uploader
+
 db = mongo.get_database('db')
 transit_table = db['transit']
 seller_table = db['seller']
@@ -128,10 +125,14 @@ def offer_valid_redeeming(payload,seller_username):
 
 def valid_transit(offer,payload):       
     if offer is None:
+        print("1")
         return False, False
-    if offer['min_val'] > payload['cp']:
+    if offer['type'] == 'BILL_DISCOUNT' and offer['min_val'] > payload['cp']:
+        print("2")
         return False,False
     if offer['type'] == 'FIXED' and (offer['mrp'] != payload['cp'] or offer['offer_price'] != payload['sp']):
+        print("3")
+        print("offer mrp = ",offer['mrp'],"payload cp",payload['cp'],"offer offer price",offer['offer_price'],"payload sp",payload['sp'])
         return False,False
     else:
         otp_gen_time = offer['timestamp']
@@ -215,13 +216,22 @@ def move_archive_to_active():
 
     return
 
+
 def verify_maps_url(map_url):   ## TODO verify maps url
     return map_url
-# def migrate():
-#     offers = history_table.find()
-#     for offer in offers:
-#         temp_obj = offer
-#         temp_obj['credit_points'] = 0
-#         history_table.delete_one({'offer_text':offer['offer_text'],'timestamp':offer['timestamp']})
-#         history_table.insert(temp_obj)
-#     return
+
+def upload_image_cloudinary(image_base64):
+    '''
+        Uploads base64 encoded image to cloudinary and returns the secure_url
+    '''
+
+    cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
+                                        api_secret=os.getenv('API_SECRET'))
+
+    try:            
+        status = cloudinary.uploader.upload(image_base64)
+        return status['secure_url']
+    except Exception as e:
+        print("Cloudinary image upload failed with exception ")
+        print(e)
+        return None
