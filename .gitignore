@@ -130,3 +130,6 @@ dmypy.json
 
 app/main/db_operations.py
 app/main/db_init.py
+/deployment
+./main/db_operations.py
+/prd_backend.bat

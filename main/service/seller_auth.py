@@ -83,7 +83,8 @@ class SellerAuthService:
                     'active_time':seller['active_time'],
                     'open':seller['open'],
                     'coupons_sold':seller['coupons_sold'],
-                    'bio':seller['bio']
+                    'bio':seller['bio'],
+                    'city':seller['city'],
                 }
                 seed = random.SystemRandom()
                 otp = seed.randint(100000,999999)
@@ -230,10 +231,13 @@ class SellerAuthService:
             "status":200
         })
         
+    
 
     ## helper
     def check_valid(self,seller):
-        ## mandatory fields -> username, password, display_name, email, contact_no, address, category, shop_name, location
+        city_list = ['Bhilai','Raipur','Durg']
+
+        ## mandatory fields -> username, password, display_name, email, contact_no, address, category, shop_name, city
         if not 'username' in seller or seller['username'] == '':
             return False
         if not 'password' in seller or seller['password'] == '':
@@ -252,6 +256,8 @@ class SellerAuthService:
             return False
         # if not 'location' in seller:      ## making location not mandatory
         #     return False
+        if 'city' not in seller or seller['city'] not in city_list:
+            return False
 
         return True
         

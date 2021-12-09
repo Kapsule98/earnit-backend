@@ -54,3 +54,15 @@ class OfferByShopController(Resource):
         except Exception as e:
             print(e)
             return jsonify(error_msg)
+    
+class ShopByCityController(Resource):
+    def __init__(self,category_service:CategoryService= CategoryService()):
+        self.category_service = category_service
+    
+    def get(self,city):
+        try:
+            return self.category_service.get_shop_in_city(city)
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
+            

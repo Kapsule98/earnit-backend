@@ -147,4 +147,41 @@ class CategoryService:
 
             })
            
-
+    def get_shop_in_city(self,cities):
+        print(cities)
+        cities = cities.split(',')
+        print(type(cities))
+        res = []
+        for city in cities:
+            sellers = seller_table.find({'city':city})
+            for seller in sellers:
+                obj = {
+                    'display_name':seller['display_name'],
+                    'shop_name':seller['shop_name'],
+                    'contact_no':seller['contact_no'],
+                    'address':seller['address'],
+                    'category':seller['category'],
+                    'location':seller['location'],
+                    'products':seller['products'],
+                    'owner_name':seller['owner_name'],
+                    'active_time':seller['active_time'],
+                    'email':seller['email'],
+                    'open':seller['open'],
+                    'bio':seller['bio'],
+                    'city':seller['city']
+                } 
+                res.append(obj)
+        if res == None or len(res) == 0:
+            return jsonify({
+                "msg":"No shops in city",
+                "city":cities,
+                "shops":[],
+                "status":404
+            })
+        else:
+            return jsonify({
+                "msg":"Shops in city fetched",
+                "city":cities,
+                "shops":res,
+                "status":200
+            })
