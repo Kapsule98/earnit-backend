@@ -84,18 +84,38 @@ def convert_image_to_url():
             image = fs.get(seller['image']).read()
             status = upload_image_cloudinary(image)
             print("cloudinary image upload status response = ",status)
-            image_url = status['secure_url']
-            print("image_url",image_url)
+            print("image_url",status)
             ## set url to image in seller
             print("Sellr username",seller['username'])
             seller_table.update_one({'username':seller['username']}, {
                 "$set":{
-                    'image':image_url
+                    'image':status
                 }
             })
             updated_seller = seller_table.find_one({'username':seller['username']})
             print(updated_seller['image'])
 
+def add_image_key_seller():
+    sellers = seller_table.find()
+    for seller in sellers:
+        if 'image' not in seller:
+            print(seller['username'])
+            # seller_table.update_one({'username':seller['username']},{
+            #     "$set":{
+            #         'image':None
+            #     }
+            # })
+
+def add_city_seller():
+    sellers = seller_table.find()
+    for seller in sellers:
+        if 'city' not in seller:
+            seller_table.update_one({'username':seller['username']},{
+                "$set":{
+                    'city':'Bhilai'
+                }
+            })
+
 if __name__ == "__main__":
-    #convert_image_to_url()
+    #add_city_seller()
     pass

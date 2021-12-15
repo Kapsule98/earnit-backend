@@ -2,7 +2,7 @@ import os
 import pymongo
 from main.config import config_by_name, mongo
 from main.utils import isCategory
-from flask import jsonify   
+from flask import json, jsonify   
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
 db = mongo.get_database('db')
@@ -148,9 +148,7 @@ class CategoryService:
             })
            
     def get_shop_in_city(self,cities):
-        print(cities)
         cities = cities.split(',')
-        print(type(cities))
         res = []
         for city in cities:
             sellers = seller_table.find({'city':city})
@@ -185,3 +183,41 @@ class CategoryService:
                 "shops":res,
                 "status":200
             })
+
+    def get_offers_in_city(self,cities):
+        cities = cities.split(',')
+        res = []
+        offers = active_offers_table.find()
+        for offer in offers:
+            shop_id = offer['shop_id']
+            shop = seller_table.find_one({'username':shop_id})
+            shop_city = shop['city']
+            if shop['city'] in cities:
+                obj = {
+                    "validity":offer['validity'],
+                    "type":offer['type'],
+                    "discount_percent":offer['discount_percent'],
+                    "offer_text":offer['offer_text'],
+                    "quantity":offer['quantity'],
+                    "min_val":offer['min_val'],
+                    "category":offer['category'],
+                    "products":offer['products'],
+                    'mrp':offer['mrp'],
+                    'offer_price':offer['offer_price'],
+                    'bio':offer['bio'],
+                    'image_url':offer['image_url'],
+                }
+                res.append(obj)
+        if res is None or len(res) == 0:
+            return jsonify({
+                "msg":"No offers available in selected city",
+                "status":404
+            })   
+        else:
+            return jsonify({
+                "msg":"Offers fetched in cities",
+                "status":200,
+                "cities":cities,
+                "offers":res
+            })
+        

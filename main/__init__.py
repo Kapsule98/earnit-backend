@@ -7,7 +7,7 @@ from main.controller.user_auth_controller import UserRegistrationController, Use
 from main.controller.seller_auth_controller import SellerRegisterController, SellerLoginController, SellerLogoutController
 from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController, SellerBioController
 from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
-from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController, ShopByCityController
+from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController, ShopByCityController, OfferByCityController
 from main.controller.history_controller import SellerHistoryController, CustomerHistoryController, CustomerPointsController
 from main.controller.credentials_controller import SellerCredentialController, UserCredentialController, AdminCredentialController
 from main.controller.cart_controller import CartService
@@ -79,6 +79,7 @@ def create_app(config_name):
 
     ## get offers by city
     api.add_resource(ShopByCityController, '/get_shop_in_city/<city>')
+    api.add_resource(OfferByCityController,'/get_offers_in_city/<city>')
 
     ## history api
     api.add_resource(SellerHistoryController, '/seller/history')
