@@ -192,7 +192,7 @@ class CategoryService:
         for offer in offers:
             shop_id = offer['shop_id']
             shop = seller_table.find_one({'username':shop_id})
-            shop_city = shop['city']
+            seller = seller_table.find_one({'username':offer['shop_id']})
             if shop['city'] in cities:
                 obj = {
                     "validity":offer['validity'],
@@ -207,6 +207,10 @@ class CategoryService:
                     'offer_price':offer['offer_price'],
                     'bio':offer['bio'],
                     'image_url':offer['image_url'],
+                    'shop_name':seller['shop_name'],
+                    'category':seller['category'],
+                    'seller_display_name':seller['display_name'],
+                    'seller_email':seller['email'],
                 }
                 res.append(obj)
         if res is None or len(res) == 0:
@@ -219,6 +223,6 @@ class CategoryService:
                 "msg":"Offers fetched in cities",
                 "status":200,
                 "cities":cities,
-                "offers":res
+                "active_offers":res
             })
         
