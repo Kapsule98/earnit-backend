@@ -36,7 +36,8 @@ class CategoryService:
                     'active_time':seller['active_time'],
                     'email':seller['email'],
                     'open':seller['open'],
-                    'bio':seller['bio']
+                    'bio':seller['bio'],
+                    'city':seller['city'],
                 } 
                 res.append(obj)
             return jsonify({
