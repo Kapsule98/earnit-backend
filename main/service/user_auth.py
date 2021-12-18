@@ -149,4 +149,35 @@ class UserAuthService:
             return False
         return True
 
-    
+    def google_signin(self,email,display_name,uid,phone):
+        user = user_table.find_one({'email':email})
+        if user is None:
+            ## register user
+            new_user = {
+                'username':uid,
+                'password':generate_password_hash(uid),
+                'display_name':display_name,
+                'email':email,
+                'phone':phone,
+                'current_location':None,
+                'redeemed_offers':[],
+                'credit_points':0,
+                'money_saved':0,
+            }
+            user_table.insert_one(new_user)
+            user = new_user
+
+        user_token = create_access_token(identity=user['username'])
+        user = {
+            'display_name':user['display_name'],
+            'email':user['email'],
+            'phone':user['phone'],
+            'current_location':user['current_location'],
+            'credit_points':user['credit_points'],
+            'money_saved':user['money_saved'],
+        }
+        return jsonify({
+            'user':user,
+            'status':200,
+            'jwt':user_token
+        })

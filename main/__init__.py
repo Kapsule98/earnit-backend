@@ -3,7 +3,7 @@ from flask_cors import CORS
 from main.config import config_by_name
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController
+from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController, UserGoogleSigninController
 from main.controller.seller_auth_controller import SellerRegisterController, SellerLoginController, SellerLogoutController
 from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController, SellerBioController
 from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
@@ -34,6 +34,7 @@ def create_app(config_name):
     api.add_resource(UserRegistrationController,'/register')
     api.add_resource(UserLoginController,'/login')
     api.add_resource(UserLogoutController,'/logout')
+    api.add_resource(UserGoogleSigninController,'/googleauth')
    
     ## seller authentication and registration
     api.add_resource(SellerRegisterController,'/seller/register')

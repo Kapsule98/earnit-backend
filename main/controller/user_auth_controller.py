@@ -64,3 +64,35 @@ class UserLogoutController(Resource):
         except Exception as e:
             print(e)
             return jsonify(error_msg)
+
+class UserGoogleSigninController(Resource):
+    def __init__(self, user_auth_service: UserAuthService = UserAuthService()):
+        self.user_auth_service = user_auth_service
+
+    def post(self):
+        req = request.json
+        if 'email' not in req:
+            return jsonify({
+                "msg":"email not found in req",
+                "status":400
+            })
+        if 'display_name' not in req:
+            return jsonify({
+                "msg":"display name not found in req",
+                "status":400
+            })
+        if 'uid' not in req:
+            return jsonify({
+                "msg":"uid not found in req",
+                "status":400
+            })
+        if 'phone' not in req:
+            return jsonify({
+                "msg":"phone not found in req",
+                "status":400
+            })
+        try :
+            return  self.user_auth_service.google_signin(req['email'],req['display_name'],req['uid'],req['phone'])
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
