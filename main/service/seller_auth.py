@@ -43,12 +43,9 @@ class SellerAuthService:
         valid = self.check_valid(seller)
         if valid:
             existing_seller = seller_table.find_one({'username':seller['username']})
-            existing_shop = seller_table.find_one({'shop_name':seller['shop_name']})
             existing_email = seller_table.find_one({'email':seller['email']})
             if existing_seller:
                 return jsonify(username_taken)
-            elif existing_shop:
-                return jsonify(shop_taken)
             elif existing_email:
                 return jsonify(email_taken)
             else:
