@@ -16,6 +16,7 @@ from main.controller.seller_image_controller import SellerImageController, Selle
 from main.controller.admin_controller import AdminController, AdminPermissionController, AdminLoginController, ShopPermissionController,AdminListController
 from main.controller.privilage_controller import PrivillageController
 from main.controller.user_controller import CustomerController
+from main.controller.rating_controller import RatingController
 
 
 
@@ -92,6 +93,9 @@ def create_app(config_name):
     api.add_resource(SellerCredentialController, '/seller/cred')
     api.add_resource(UserCredentialController, '/cred')
     api.add_resource(AdminCredentialController,'/admin/cred')
+
+    ## Shop rating api
+    api.add_resource(RatingController,'/rating/<shop_email>')
 
     ##cart api
     api.add_resource(CartService,'/cart')
