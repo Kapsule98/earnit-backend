@@ -112,6 +112,15 @@ class ShopPermissionController(Resource):
         except Exception as e:
             print(e)
             return jsonify(error_msg)
+    
+    @jwt_required()
+    def delete(self,email):
+        username = get_jwt_identity()
+        admin=admin_table.find_one({'username':username})
+        if admin is None:
+            return "admin not found",404
+        return self.admin_service.delete_account(email)
+        
 
 class AdminListController(Resource):
     def __init__(self,admin_service:AdminService = AdminService()):
