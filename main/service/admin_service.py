@@ -21,7 +21,13 @@ seller_table = db['seller']
 shop_permission_table = db['shop_permission_stat']
 
 class AdminService:
-    def delete_seller(self,seller_email):
+    def delete_seller(self,username,seller_email):
+        admin = admin_table.find_one({'username':username})
+        if admin is None:
+            return jsonify({
+                "msg":"Invalid auth",
+                "status":400
+            })
         seller=seller_table.find_one({'email':seller_email})
         SellerAuthService.delete_account(seller['username'])
     def register(self,user):
