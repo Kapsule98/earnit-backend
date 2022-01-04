@@ -28,8 +28,14 @@ class AdminService:
                 "msg":"Invalid auth",
                 "status":400
             })
-        seller=seller_table.find_one({'email':seller_email})
-        SellerAuthService.delete_account(seller['username'])
+        if 'delete_privillage'in admin and admin['delete_privillage']:
+            seller=seller_table.find_one({'email':seller_email})
+            SellerAuthService.delete_account(seller['username'])
+        else:
+            return jsonify({
+                "msg":"Invalid auth",
+                "status":400
+            })
     def register(self,user):
         if 'username' not in user:
             return "Username is mandatory",400
