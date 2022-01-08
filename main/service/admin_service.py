@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token
 import random
 import time
 from main.utils import send_email
+from main.service.seller_auth import SellerAuthService
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -20,6 +21,22 @@ seller_table = db['seller']
 shop_permission_table = db['shop_permission_stat']
 
 class AdminService:
+    def delete_seller(self,username,seller_email):
+        admin = admin_table.find_one({'username':username})
+        if admin is None:
+            return jsonify({
+                "msg":"Invalid auth",
+                "status":400
+            })
+        if 'can_delete'in admin and admin['can_delete'] == 'True':
+            seller=seller_table.find_one({'email':seller_email})
+            print(seller['username'])
+            return SellerAuthService.delete_account(self,seller['username'])
+        else:
+            return jsonify({
+                "msg":"Invalid auth",
+                "status":400
+            })
     def register(self,user):
         if 'username' not in user:
             return "Username is mandatory",400

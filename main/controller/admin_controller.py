@@ -112,6 +112,16 @@ class ShopPermissionController(Resource):
         except Exception as e:
             print(e)
             return jsonify(error_msg)
+    
+    @jwt_required()
+    def delete(self,email):
+        try:
+            username = get_jwt_identity()
+            return self.admin_service.delete_seller(username,email)
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)
+        
 
 class AdminListController(Resource):
     def __init__(self,admin_service:AdminService = AdminService()):
