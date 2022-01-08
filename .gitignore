@@ -1,3 +1,5 @@
+deployment/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -130,7 +132,7 @@ dmypy.json
 
 app/main/db_operations.py
 app/main/db_init.py
-deployment/
+
 ./main/db_operations.py
 /prd_backend.bat
 *.service

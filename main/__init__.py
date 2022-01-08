@@ -108,7 +108,7 @@ def create_app(config_name):
     api.add_resource(AdminController, '/admin')
     api.add_resource(AdminPermissionController, '/admin/permission')
     api.add_resource(AdminLoginController, '/admin/login')
-    api.add_resource(ShopPermissionController, '/admin/shop')
+    api.add_resource(ShopPermissionController, '/admin/shop', '/admin/shop/<email>')
     api.add_resource(CustomerController,'/admin/customer')
     api.add_resource(AdminListController,'/admin/adminlist')
 

@@ -28,9 +28,10 @@ class AdminService:
                 "msg":"Invalid auth",
                 "status":400
             })
-        if 'delete_privillage'in admin and admin['delete_privillage']:
+        if 'can_delete'in admin and admin['can_delete'] == 'True':
             seller=seller_table.find_one({'email':seller_email})
-            SellerAuthService.delete_account(seller['username'])
+            print(seller['username'])
+            return SellerAuthService.delete_account(self,seller['username'])
         else:
             return jsonify({
                 "msg":"Invalid auth",

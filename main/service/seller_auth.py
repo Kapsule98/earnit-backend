@@ -203,6 +203,7 @@ class SellerAuthService:
         })
 
     def delete_account(self,username):
+        print("_____in_______",username)
         seller = seller_table.find_one({'username':username})
         if seller is None:
             return jsonify({
