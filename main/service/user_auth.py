@@ -93,6 +93,7 @@ class UserAuthService:
             })
 
         new_user = user['user_obj']
+        new_user['time_added']=int(time.time())
         user_table.insert_one(new_user)
         verify_table.delete_one({"email":email,"otp":otp})
         return jsonify({
