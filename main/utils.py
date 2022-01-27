@@ -6,6 +6,7 @@ import time
 import smtplib
 from email.message import EmailMessage
 import cloudinary, cloudinary.uploader
+from main.db_backup import Database
 
 db = mongo.get_database('db')
 transit_table = db['transit']
@@ -235,3 +236,6 @@ def upload_image_cloudinary(image_base64):
         print("Cloudinary image upload failed with exception ")
         print(e)
         return None
+
+def db_backup():
+    Database.copy_db()

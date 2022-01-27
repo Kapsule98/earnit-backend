@@ -1,7 +1,6 @@
 import os
-from dns.rdatatype import NULL
 import pymongo
-from config import config_by_name, mongo
+from config import  mongo
 import gridfs
 import cloudinary
 import cloudinary.uploader
@@ -116,6 +115,34 @@ def add_city_seller():
                 }
             })
 
+
+def update_image_to_array():
+    offers = active_offer_table.find()
+    for offer in offers:
+        if offer['image_url'] is None:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+                "$set":{
+                    'image_url':[]
+                }
+            })
+        else:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+                "$set":{
+                    'image_url':[offer['image_url']]
+                }
+            })
+        # active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+        #         "$set":{
+        #             'image_url':offer['new_image_url']
+        #         }
+        #     })
+
+
+def print_all_offers():
+    offers = active_offer_table.find()
+    for offer in offers:
+        print(offer['offer_text'],offer['image_url'])
+
 if __name__ == "__main__":
-    #add_city_seller()
+    update_image_to_array()
     pass
