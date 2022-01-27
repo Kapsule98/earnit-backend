@@ -186,7 +186,6 @@ def send_email(email,username,otp,opcode):
     return True    
 
 def weed_offers():
-    print("weed active offers called")
     transit_offers = transit_table.find()
     transit_count = 0
     for offer in transit_offers:
@@ -195,7 +194,6 @@ def weed_offers():
             increment_qty(offer['offer_text'],offer['s_id'])
             transit_count = transit_count + 1
     
-    print(str(transit_count) + " offers removed from transit")
     return 
 
 def calculate_credit_points(sp):
