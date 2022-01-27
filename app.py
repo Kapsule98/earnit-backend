@@ -11,7 +11,7 @@ app.app_context().push()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(weed_offers, 'interval', minutes=2, id='weed_transit')
-scheduler.add_job(db_backup, 'interval',seconds = 5,id = 'backup_db')
+scheduler.add_job(db_backup, 'interval',minutes = 2,id = 'backup_db')
 scheduler.start()
 
 if __name__ == '__main__':    
