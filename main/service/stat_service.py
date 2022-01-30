@@ -1,4 +1,3 @@
-from _typeshed import Self
 
 import datetime
 from main.config import mongo
@@ -17,8 +16,14 @@ class Statistics:
         for seller in sellerdetails:
             date = datetime.datetime.fromtimestamp(seller['time_added']).strftime('%Y-%m-%d')
             #add this seller to date
-            res[date].add(seller)
-            return res
+            del seller['_id']
+            del seller['username']
+            del seller['password']
+            if date not in res:
+                res[date] = [seller]
+            else:
+                res[date].append(seller)
+        return res
         
 
         
@@ -28,5 +33,11 @@ class Statistics:
         for user in userdetails:
             date = datetime.datetime.fromtimestamp(user['time_added']).strftime('%Y-%m-%d')
             #add this seller to date
-            resuser[date].add(user)
-            return resuser
+            del user['_id']
+            del user['username']
+            del user['password']
+            if date not in resuser:
+                resuser[date] = [user]
+            else:
+                resuser[date].append(user)
+        return resuser
