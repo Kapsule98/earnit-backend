@@ -4,6 +4,7 @@ from config import  mongo
 import gridfs
 import cloudinary
 import cloudinary.uploader
+import time
 # from utils import upload_image_cloudinary
 
 # config = config_by_name[os.getenv('ENV')]
@@ -15,6 +16,7 @@ active_offer_table = db['active_offer']
 archive_table = db['archive']
 history_table = db['redeemed']
 category_table = db['category']
+user_table = db['user']
 
 def delete_all_user_images():
     sellers = seller_table.find()
@@ -152,6 +154,22 @@ def add_view_count_seller():
             }
         })
 
+def add_time_added():
+    sellers = seller_table.find()
+    for s in sellers:
+        seller_table.find_one_and_update({'username':s['username']},{
+            "$set":{
+                'time_added':int(time.time())
+            }
+        })
+    users = user_table.find()
+    for u in users:
+        user_table.find_one_and_update({'username':u['username']},{
+            "$set":{
+                'time_added':int(time.time())
+            }
+        })
 if __name__ == "__main__":
-    add_view_count_seller()
+    # add_view_count_seller()
+    add_time_added()
     pass
