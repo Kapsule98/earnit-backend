@@ -17,7 +17,7 @@ from main.controller.admin_controller import AdminController, AdminPermissionCon
 from main.controller.privilage_controller import PrivillageController
 from main.controller.user_controller import CustomerController
 from main.controller.rating_controller import RatingController
-
+from main.controller.stat_controller import StatController
 
 
 def create_app(config_name):
@@ -117,5 +117,7 @@ def create_app(config_name):
 
     app.register_blueprint(api_blueprint,url_prefix="/api")
 
+    ## userstats
+    api.add_resource(StatController,'/statistic')
 
     return app
