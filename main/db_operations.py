@@ -4,7 +4,7 @@ from config import  mongo
 import gridfs
 import cloudinary
 import cloudinary.uploader
-from utils import upload_image_cloudinary
+# from utils import upload_image_cloudinary
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -143,6 +143,15 @@ def print_all_offers():
     for offer in offers:
         print(offer['offer_text'],offer['image_url'])
 
+def add_view_count_seller():
+    sellers = seller_table.find()
+    for seller in sellers:
+        seller_table.update_one({'username':seller['username']},{
+            "$set":{
+                "view_count":0
+            }
+        })
+
 if __name__ == "__main__":
-    update_image_to_array()
+    add_view_count_seller()
     pass

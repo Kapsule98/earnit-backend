@@ -153,7 +153,6 @@ class SellerAuthService:
             seller_found = seller_table.find_one({'username':seller['username']})
             if seller_found is None:
                 seller_found = seller_temp_table.find_one({'username':seller['username']})
-                print(seller_found)
                 if seller_found is not None and check_password_hash(seller_found['password'],seller['password']):
                     jwt_token = create_access_token(identity=seller_found['username'])
                     return jsonify({
@@ -181,7 +180,8 @@ class SellerAuthService:
                     'earning':seller_found['earning'],
                     'active_time':seller_found['active_time'],
                     'open':seller_found['open'],
-                    'coupons_sold':seller_found['coupons_sold']
+                    'coupons_sold':seller_found['coupons_sold'],
+                    'view_count':seller_found['view_count']
                 }
                 jwt_token = create_access_token(identity=seller_found['username'])
                 return jsonify({

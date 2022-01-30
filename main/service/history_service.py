@@ -59,7 +59,8 @@ class HistoryService:
             "msg":"seller history fetched",
             "status":200,
             "history":res,
-            "number_customers":len(unique_customers) 
+            "number_customers":len(unique_customers),
+            "view_count":seller['view_count']
         })
     
     def get_customer_redeemed_offers(self,customer_username):
