@@ -1,11 +1,13 @@
 import os
 from dns.rdatatype import NULL
 from flask_jwt_extended.utils import create_refresh_token
+from itsdangerous import JSONWebSignatureSerializer
 from main.config import mongo
 import time
 import smtplib
 from email.message import EmailMessage
 import cloudinary, cloudinary.uploader
+from main.db_backup import Database
 
 db = mongo.get_database('db')
 transit_table = db['transit']
@@ -185,7 +187,6 @@ def send_email(email,username,otp,opcode):
     return True    
 
 def weed_offers():
-    print("weed active offers called")
     transit_offers = transit_table.find()
     transit_count = 0
     for offer in transit_offers:
@@ -194,7 +195,6 @@ def weed_offers():
             increment_qty(offer['offer_text'],offer['s_id'])
             transit_count = transit_count + 1
     
-    print(str(transit_count) + " offers removed from transit")
     return 
 
 def calculate_credit_points(sp):
@@ -235,3 +235,19 @@ def upload_image_cloudinary(image_base64):
         print("Cloudinary image upload failed with exception ")
         print(e)
         return None
+
+def db_backup():
+    Database.copy_db()
+
+def increment_shop_view_count(shop_email):
+    seller = seller_table.find_one({'email':shop_email})
+    if seller is None:
+        return 
+    else:
+        new_count = seller['view_count'] + 1
+        seller_table.find_one_and_update({'email':shop_email},{
+            "$set":{
+                "view_count":new_count
+            }
+        })
+        return

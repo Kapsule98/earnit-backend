@@ -1,11 +1,10 @@
 import os
-from dns.rdatatype import NULL
 import pymongo
-from config import config_by_name, mongo
+from config import  mongo
 import gridfs
 import cloudinary
 import cloudinary.uploader
-from utils import upload_image_cloudinary
+# from utils import upload_image_cloudinary
 
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -116,6 +115,43 @@ def add_city_seller():
                 }
             })
 
+
+def update_image_to_array():
+    offers = active_offer_table.find()
+    for offer in offers:
+        if offer['image_url'] is None:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+                "$set":{
+                    'image_url':[]
+                }
+            })
+        else:
+            active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+                "$set":{
+                    'image_url':[offer['image_url']]
+                }
+            })
+        # active_offer_table.update_one({'shop_id':offer['shop_id'],'offer_text':offer['offer_text']},{
+        #         "$set":{
+        #             'image_url':offer['new_image_url']
+        #         }
+        #     })
+
+
+def print_all_offers():
+    offers = active_offer_table.find()
+    for offer in offers:
+        print(offer['offer_text'],offer['image_url'])
+
+def add_view_count_seller():
+    sellers = seller_table.find()
+    for seller in sellers:
+        seller_table.update_one({'username':seller['username']},{
+            "$set":{
+                "view_count":0
+            }
+        })
+
 if __name__ == "__main__":
-    #add_city_seller()
+    add_view_count_seller()
     pass

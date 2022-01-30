@@ -1,7 +1,7 @@
 import os
 import pymongo
 from main.config import config_by_name, mongo
-from main.utils import isCategory
+from main.utils import isCategory, increment_shop_view_count
 from flask import json, jsonify   
 # config = config_by_name[os.getenv('ENV')]
 # mongo = pymongo.MongoClient(config.MONGO_URI)
@@ -38,6 +38,7 @@ class CategoryService:
                     'open':seller['open'],
                     'bio':seller['bio'],
                     'city':seller['city'],
+                    'view_count':seller['view_count']
                 } 
                 res.append(obj)
             return jsonify({
@@ -115,6 +116,7 @@ class CategoryService:
                 "status":200
             })
         else:
+            increment_shop_view_count(shop_email)
             offers = active_offers_table.find({'shop_id':seller['username']})
             res = []
             for offer in offers:
@@ -144,8 +146,8 @@ class CategoryService:
                 "shop_name":seller['shop_name'],
                 "display_name":seller['display_name'],
                 "active_time":seller['active_time'],
-                "seller_email":seller['email']
-
+                "seller_email":seller['email'],
+                "view_count":seller['view_count']+1
             })
            
     def get_shop_in_city(self,cities):
@@ -167,7 +169,8 @@ class CategoryService:
                     'email':seller['email'],
                     'open':seller['open'],
                     'bio':seller['bio'],
-                    'city':seller['city']
+                    'city':seller['city'],
+                    'view_count':seller['view_count']
                 } 
                 res.append(obj)
         if res == None or len(res) == 0:

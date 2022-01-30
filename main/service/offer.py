@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from mmap import ACCESS_READ
 import time
 from flask import jsonify
@@ -111,10 +112,12 @@ class OfferService:
                 })
             else:
                 ## if offer has image then upload to cloudinary and get image url
-                image_url = None
+                image_url = []
                 if 'image_base64' in offer:
-                    image_url = upload_image_cloudinary(offer['image_base64'])
-
+                    for image in offer['image_base64']:
+                        image_url.append(upload_image_cloudinary(image))
+                    # image_url = upload_image_cloudinary(offer['image_base64'])
+                    
                 print("image url = ",image_url)
                 offer = {
                     'shop_id':username,
