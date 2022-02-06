@@ -132,6 +132,7 @@ class SellerAuthService:
             })
 
         new_seller = seller['seller_obj']
+        new_seller['time_added']=int (time.time())
         existing = seller_temp_table.find_one({'username':new_seller['username'],'email':new_seller['email']})
         if existing:
             return jsonify({

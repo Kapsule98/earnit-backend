@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController, UserGoogleSigninController
 from main.controller.seller_auth_controller import SellerRegisterController, SellerLoginController, SellerLogoutController
 from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController, SellerBioController
-from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
+from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController, OfferStatController
 from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController, ShopByCityController, OfferByCityController
 from main.controller.history_controller import SellerHistoryController, CustomerHistoryController, CustomerPointsController
 from main.controller.credentials_controller import SellerCredentialController, UserCredentialController, AdminCredentialController
@@ -17,7 +17,7 @@ from main.controller.admin_controller import AdminController, AdminPermissionCon
 from main.controller.privilage_controller import PrivillageController
 from main.controller.user_controller import CustomerController
 from main.controller.rating_controller import RatingController
-
+from main.controller.stat_controller import StatController
 
 
 def create_app(config_name):
@@ -117,5 +117,10 @@ def create_app(config_name):
 
     app.register_blueprint(api_blueprint,url_prefix="/api")
 
+    ## userstats
+    api.add_resource(StatController,'/statistic')
+
+    ## Product Offer Stat
+    api.add_resource(OfferStatController,'/offerstat')
 
     return app
