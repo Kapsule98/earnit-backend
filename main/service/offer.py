@@ -205,7 +205,14 @@ class OfferService:
 
     def increment_count(self,req):
         offer_text = req['offer_text']
-        s_id = req['shop_id']
+        s_email = req['email']
+        seller = seller_table.find_one({'email':s_email})
+        if seller is None:
+            return jsonify({
+                "msg":"Seller does not exist",
+                "status":404
+            })
+        s_id = seller['username']
         offer = active_offer_table.find_one({'shop_id':s_id,'offer_text':offer_text})
         if offer is None:
             return jsonify({
