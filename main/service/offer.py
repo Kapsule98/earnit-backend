@@ -2,6 +2,7 @@ from distutils.command.upload import upload
 from mmap import ACCESS_READ
 import time
 from flask import jsonify
+from itsdangerous import json
 from main.utils import isOffer, isOfferModify, prepare_offer, upload_image_cloudinary
 from main.config import mongo
 import os
@@ -201,3 +202,27 @@ class OfferService:
                     "msg":"offer does not exist",
                     "status":400
                 })
+
+    def increment_count(self,req):
+        offer_text = req['offer_text']
+        s_id = req['shop_id']
+        offer = active_offer_table.find_one({'shop_id':s_id,'offer_text':offer_text})
+        if offer is None:
+            return jsonify({
+                "msg":"No offer found",
+                "status":404
+            })
+        
+        else:
+            new_count = offer['count'] + 1
+            active_offer_table.find_one_and_update({'shop_id':s_id,'offer_text':offer_text},{
+                "$set":{
+                    "count": new_count
+                }
+            })
+            del offer['_id']
+            return jsonify({
+                "msg":"Offer fetched successfully",
+                "offer":offer,
+                "status":200
+            })

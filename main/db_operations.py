@@ -152,6 +152,16 @@ def add_view_count_seller():
             }
         })
 
+def add_count_to_offers():
+    offers = active_offer_table.find()
+    for offer in offers:
+        active_offer_table.update_one({'offer_text':offer['offer_text'],'shop_id':offer['shop_id']},{
+            "$set":{
+                "count":0
+            }
+        })
+    return
 if __name__ == "__main__":
-    add_view_count_seller()
+    # add_view_count_seller()
+    add_count_to_offers()
     pass

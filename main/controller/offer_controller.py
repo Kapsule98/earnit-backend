@@ -107,3 +107,20 @@ class SellerRedeemController(Resource):
             print(e)
             return jsonify(error_msg)
 
+
+class OfferStatController(Resource):
+    def __init__(self,offer_service:OfferService = OfferService()):
+        self.offer_service = offer_service
+    
+    def post(self):
+        try:
+            req = request.json
+            if 'offer_text' not in req or 'shop_id' not in req:
+                return jsonify({
+                    "msg":"Invalid req structure",
+                    "status":400
+                })
+            return self.offer_service.increment_count(req)
+        except Exception as e:
+            print(e)
+            return jsonify(error_msg)

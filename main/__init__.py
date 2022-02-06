@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 from main.controller.user_auth_controller import UserRegistrationController, UserLoginController , UserLogoutController, UserGoogleSigninController
 from main.controller.seller_auth_controller import SellerRegisterController, SellerLoginController, SellerLogoutController
 from main.controller.shop_detail_controller import SellerContactController, SellerAddressController, SellerCategoryController, SellerProductController,SellerEmailController,SellerLocationController,SellerOwnerNameController,SellerActiveTimeController,SellerShopNameController,SellerDisplayNameController,OpenShopController,CloseShopController, SellerEarningController, SellerCouponsController, SellerBioController
-from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController
+from main.controller.offer_controller import SellerOfferController, OfferController, RedeemController, SellerRedeemController, OfferStatController
 from main.controller.category_controller import CategoryController, ShopByCategoryController, OfferByCategoryController, OfferByShopController, ShopByCityController, OfferByCityController
 from main.controller.history_controller import SellerHistoryController, CustomerHistoryController, CustomerPointsController
 from main.controller.credentials_controller import SellerCredentialController, UserCredentialController, AdminCredentialController
@@ -119,5 +119,8 @@ def create_app(config_name):
 
     ## userstats
     api.add_resource(StatController,'/statistic')
+
+    ## Product Offer Stat
+    api.add_resource(OfferStatController,'/offerstat')
 
     return app
