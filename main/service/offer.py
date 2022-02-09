@@ -44,6 +44,7 @@ class OfferService:
                'category':seller['category'],
                'seller_display_name':seller['display_name'],
                'seller_email':seller['email'],
+               'count':doc['count']
             }
             offers.append(obj)
         count = len(offers)
@@ -83,6 +84,7 @@ class OfferService:
                     'category':seller['category'],
                     'seller_display_name':seller['display_name'],
                     'email':seller['email'],
+                    'count':offer['count']
                 }
                 res.append(res_offer)
                 count = count + 1
@@ -133,7 +135,8 @@ class OfferService:
                     'bio':offer['bio'],
                     'image_url':image_url,
                     'offer_price':offer['offer_price'],
-                    'category':seller['category']
+                    'category':seller['category'],
+                    'count':0
                 }
                 active_offer_table.insert_one(offer)
                 return jsonify({

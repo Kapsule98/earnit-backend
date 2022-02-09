@@ -115,7 +115,7 @@ class OfferStatController(Resource):
     def post(self):
         try:
             req = request.json
-            if 'offer_text' not in req or 'shop_id' not in req:
+            if 'offer_text' not in req or 'email' not in req:
                 return jsonify({
                     "msg":"Invalid req structure",
                     "status":400
