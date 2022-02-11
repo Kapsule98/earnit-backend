@@ -24,7 +24,6 @@ class OfferService:
     def get_all_offers(self):
         cur = active_offer_table.find()
         offers = []
-        print("cur = ",cur)
         for doc in cur:
             seller_id = doc['shop_id']
             seller = seller_table.find_one({'username':seller_id})
@@ -44,7 +43,7 @@ class OfferService:
                'category':seller['category'],
                'seller_display_name':seller['display_name'],
                'seller_email':seller['email'],
-               'count':doc['count']
+               'count':doc['count'] + seller['view_count']
             }
             offers.append(obj)
         count = len(offers)
@@ -84,7 +83,7 @@ class OfferService:
                     'category':seller['category'],
                     'seller_display_name':seller['display_name'],
                     'email':seller['email'],
-                    'count':offer['count']
+                    'count':offer['count'] + seller['view_count']
                 }
                 res.append(res_offer)
                 count = count + 1

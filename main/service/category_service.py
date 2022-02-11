@@ -95,7 +95,7 @@ class CategoryService:
                     "shop_name":seller['shop_name'],
                     "display_name":seller['display_name'],
                     "seller_email":seller['email'],
-                    'count':offer['count']
+                    'count':offer['count'] + seller['view_count']
                 }
                 res.append(obj)
             return jsonify({
@@ -134,7 +134,7 @@ class CategoryService:
                         'offer_price':offer['offer_price'],
                         'bio':offer['bio'],
                         'image_url':offer['image_url'],
-                        'count':offer['count']
+                        'count':offer['count'] + seller['view_count']
                     }
                     res.append(obj)
             return jsonify({
@@ -217,6 +217,7 @@ class CategoryService:
                     'category':seller['category'],
                     'seller_display_name':seller['display_name'],
                     'seller_email':seller['email'],
+                    'count':offer['count'] + seller['view_count']
                 }
                 res.append(obj)
         if res is None or len(res) == 0:
